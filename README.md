@@ -71,7 +71,8 @@ Flash Attention Metal implements the FlashAttention-2 algorithm using Apple's Me
 ### Python Dependencies
 ```bash
 pip install numpy torch
-pip install mlx-py  # Optional, for performance comparisons
+pip install mlx
+pip install pybind11 --no-build-isolation  # I run in a standard python venv and this was needed
 ```
 
 ## Quick Start
