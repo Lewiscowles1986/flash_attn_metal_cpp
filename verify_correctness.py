@@ -6,6 +6,9 @@ Compares against PyTorch reference implementation
 
 import sys
 import numpy as np
+from pathlib import Path
+
+my_folder = Path(__file__).resolve().parent
 
 # Initialize Metal with OPTIMIZED kernel
 try:
@@ -13,8 +16,8 @@ try:
     _flash_attn_metal.initialize()
     
     # Load common and OPTIMIZED kernel
-    common_src = open('kernels/common.metal').read()
-    opt_src = open('kernels/flash_attention_fwd_optimized.metal').read()
+    common_src = open(my_folder / 'kernels/common.metal').read()
+    opt_src = open(my_folder / 'kernels/flash_attention_fwd_optimized.metal').read()
     _flash_attn_metal.compile_shaders(common_src + '\n' + opt_src)
     print("✅ Optimized Metal kernel loaded\n")
 except Exception as e:

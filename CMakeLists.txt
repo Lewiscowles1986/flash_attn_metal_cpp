@@ -99,8 +99,8 @@ if(METAL_COMPILER)
     # Compile Metal shaders to metallib
     add_custom_command(
         OUTPUT ${METALLIB_OUTPUT}
-        COMMAND xcrun -sdk macosx metal -c ${METAL_SHADERS} -o ${CMAKE_CURRENT_BINARY_DIR}/kernels.air
-        COMMAND xcrun -sdk macosx metallib ${CMAKE_CURRENT_BINARY_DIR}/kernels.air -o ${METALLIB_OUTPUT}
+        COMMAND xcrun -sdk macosx metal -c ${CMAKE_CURRENT_SOURCE_DIR}/kernels/flash_attention_all.metal -o ${CMAKE_CURRENT_BINARY_DIR}/all.air
+        COMMAND xcrun -sdk macosx metallib ${CMAKE_CURRENT_BINARY_DIR}/all.air -o ${METALLIB_OUTPUT}
         DEPENDS ${METAL_SHADERS}
         COMMENT "Compiling Metal shaders to metallib"
         VERBATIM

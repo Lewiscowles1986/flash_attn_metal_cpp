@@ -17,6 +17,9 @@ import torch
 import torch.nn.functional as F
 import time
 from typing import Optional, Tuple
+from pathlib import Path
+
+my_folder = Path(__file__).resolve().parent
 
 # Import Metal implementation
 try:
@@ -423,9 +426,9 @@ def main():
     # Initialize Metal with OPTIMIZED kernel
     try:
         _flash_attn_metal.initialize()
-        with open('kernels/common.metal', 'r') as f:
+        with open(my_folder / 'kernels/common.metal', 'r') as f:
             common_src = f.read()
-        with open('kernels/flash_attention_fwd_optimized.metal', 'r') as f:
+        with open(my_folder / 'kernels/flash_attention_fwd_optimized.metal', 'r') as f:
             fwd_src = f.read()
         _flash_attn_metal.compile_shaders(common_src + '\n' + fwd_src)
         print("Metal initialization successful (using optimized kernel)\n")

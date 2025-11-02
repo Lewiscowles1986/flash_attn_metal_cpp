@@ -7,6 +7,9 @@ High-performance Flash Attention implementation optimized for Apple Silicon GPUs
 __version__ = "0.1.0"
 
 import numpy as np
+from pathlib import Path
+
+my_folder = Path(__file__).resolve().parent
 
 try:
     # Try relative import first (when imported as a package)
@@ -21,17 +24,16 @@ try:
         raise RuntimeError("Failed to initialize Metal device")
     
     # Load shaders
-    import os
-    shader_dir = os.path.join(os.path.dirname(__file__), 'kernels')
+    shader_dir = my_folder / 'kernels'
     
     # Try to load compiled metallib first
-    metallib_path = os.path.join(os.path.dirname(__file__), 'build', 'flash_attention.metallib')
+    metallib_path = my_folder / 'build' / 'flash_attention.metallib'
     if os.path.exists(metallib_path):
         _flash_attn_metal.load_shaders(metallib_path)
     else:
         # Fall back to compiling from source
-        common_metal = os.path.join(shader_dir, 'common.metal')
-        fwd_metal = os.path.join(shader_dir, 'flash_attention_fwd.metal')
+        common_metal = shader_dir / 'common.metal'
+        fwd_metal = shader_dir / 'flash_attention_fwd_optimized.metal'
         
         if os.path.exists(common_metal) and os.path.exists(fwd_metal):
             with open(common_metal, 'r') as f:
